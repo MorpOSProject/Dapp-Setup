@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MORP OS Documentation</title>
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a24;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0b0;
+      --text-muted: #6b6b7b;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-yellow: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+      --border-color: #2a2a3a;
+      --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 24px;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--gradient-primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .version-badge {
+      background: var(--bg-card);
+      color: var(--accent-cyan);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Navigation */
+    nav {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      padding: 12px 0;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    /* Main Content */
+    main {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 40px;
+      padding: 40px 0;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+
+    .sidebar-section {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .sidebar-links {
+      list-style: none;
+    }
+
+    .sidebar-links a {
+      display: block;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 4px;
+      border-left: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .sidebar-links a:hover {
+      color: var(--text-primary);
+      background: var(--bg-card);
+      border-left-color: var(--accent-blue);
+    }
+
+    /* Content */
+    .content {
+      max-width: 800px;
+    }
+
+    .content h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .content h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 48px 0 16px 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .content h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 32px 0 12px 0;
+      color: var(--accent-cyan);
+    }
+
+    .content p {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .content ul, .content ol {
+      margin-bottom: 16px;
+      padding-left: 24px;
+    }
+
+    .content li {
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 40px;
+      border: 1px solid var(--border-color);
+    }
+
+    .hero-subtitle {
+      color: var(--text-secondary);
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .feature-icon.blue { background: rgba(59, 130, 246, 0.2); }
+    .feature-icon.green { background: rgba(16, 185, 129, 0.2); }
+    .feature-icon.purple { background: rgba(139, 92, 246, 0.2); }
+    .feature-icon.cyan { background: rgba(6, 182, 212, 0.2); }
+
+    /* Code Blocks */
+    pre {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      background: var(--bg-card);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card);
+      padding: 8px 16px;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid var(--border-color);
+      border-bottom: none;
+      margin-top: 16px;
+    }
+
+    .code-header + pre {
+      margin-top: 0;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .code-lang {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background: var(--bg-card);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    td {
+      color: var(--text-secondary);
+    }
+
+    tr:hover td {
+      background: var(--bg-card);
+    }
+
+    /* Callouts */
+    .callout {
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .callout-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .callout-content {
+      flex: 1;
+    }
+
+    .callout-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .callout.info {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .callout.warning {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .callout.danger {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .callout.success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Flow Diagram */
+    .flow-diagram {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+      background: var(--bg-secondary);
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .arrow-down {
+      width: 32px;
+      display: flex;
+      justify-content: center;
+      color: var(--accent-cyan);
+      font-size: 20px;
+    }
+
+    /* API Endpoint */
+    .endpoint {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .method {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    .method.get { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+    .method.post { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+    .method.patch { background: rgba(245, 158, 11, 0.2); color: var(--accent-yellow); }
+    .method.delete { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+
+    .endpoint-path {
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .endpoint-body {
+      padding: 16px;
+    }
+
+    .endpoint-desc {
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    /* Privacy Comparison */
+    .privacy-table {
+      margin: 24px 0;
+    }
+
+    .privacy-yes {
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .privacy-no {
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      padding: 40px 0;
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    section {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Print Styles */
+    @media print {
+      body { background: white; color: black; }
+      .sidebar, nav, header { display: none; }
+      main { display: block; }
+      .content { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          MORP OS
+        </div>
+        <span class="version-badge">v1.0.0</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <ul class="nav-links">
+        <a href="#overview" class="active">Overview</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#stealth-payments">Stealth Payments</a>
+        <a href="#zk-commitment">ZK Commitment</a>
+        <a href="#privacy-scope">Privacy Scope</a>
+        <a href="#api-reference">API Reference</a>
+        <a href="#security">Security</a>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <main>
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">Getting Started</div>
+          <ul class="sidebar-links">
+            <a href="#overview">Overview</a>
+            <a href="#features">Core Features</a>
+            <a href="#architecture">Architecture</a>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Stealth Payments</div>
+          <ul class="sidebar-links">
+            <a href="#stealth-payments">How It Works</a>
+            <a href="#escrow-flow">Escrow Flow</a>
+            <a href="#zk-commitment">ZK Commitment</a>
+            <a href="#claim-process">Claiming Payments</a>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Privacy</div>
+          <ul class="sidebar-links">
+            <a href="#privacy-scope">Privacy Scope</a>
+            <a href="#on-chain-visibility">On-Chain Visibility</a>
+            <a href="#limitations">Limitations</a>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">API</div>
+          <ul class="sidebar-links">
+            <a href="#api-reference">API Reference</a>
+            <a href="#api-stealth">Stealth Endpoints</a>
+            <a href="#api-portfolio">Portfolio Endpoints</a>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="content">
+        <!-- Overview Section -->
+        <section id="overview">
+          <div class="hero">
+            <h1>MORP OS Documentation</h1>
+            <p class="hero-subtitle">
+              Private Finance Operating System on Solana. Non-custodial privacy layer for payments, swaps, and portfolio management.
+            </p>
+            <div class="feature-grid">
+              <div class="feature-item">
+                <div class="feature-icon blue">🛡️</div>
+                <span>Shadow Balances</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon green">🔐</div>
+                <span>ZK Commitments</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon purple">👻</div>
+                <span>Stealth Payments</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon cyan">📊</div>
+                <span>Private Analytics</span>
+              </div>
+            </div>
+          </div>
+
+          <h2 id="features">Core Features</h2>
+          <ul>
+            <li><strong>Shadow Balances</strong> - Balances hidden from public blockchain explorers</li>
+            <li><strong>Stealth Payments</strong> - Private P2P transfers with claim codes via escrow</li>
+            <li><strong>ZK Commitment Scheme</strong> - Optional maximum privacy mode hiding amounts</li>
+            <li><strong>Selective Disclosure</strong> - Generate cryptographic proofs for auditors</li>
+            <li><strong>Batch Processing</strong> - Transactions grouped to obscure individual activity</li>
+            <li><strong>Non-Custodial</strong> - Users sign all transactions client-side</li>
+          </ul>
+        </section>
+
+        <!-- Architecture Section -->
+        <section id="architecture">
+          <h2>Architecture</h2>
+          
+          <h3>Technology Stack</h3>
+          <table>
+            <tr><th>Layer</th><th>Technology</th></tr>
+            <tr><td>Frontend</td><td>React, TailwindCSS, Shadcn/UI</td></tr>
+            <tr><td>Wallet</td><td>@solana/wallet-adapter (Phantom, Solflare)</td></tr>
+            <tr><td>State</td><td>TanStack Query v5</td></tr>
+            <tr><td>Backend</td><td>Express.js, TypeScript</td></tr>
+            <tr><td>Database</td><td>PostgreSQL + Drizzle ORM</td></tr>
+            <tr><td>Blockchain</td><td>Solana, Jupiter DEX</td></tr>
+          </table>
+
+          <h3>Key Components</h3>
+          <div class="code-header">
+            <span class="code-lang">Project Structure</span>
+          </div>
+          <pre><code>├── client/src/
+│   ├── pages/
+│   │   ├── dashboard.tsx    # Portfolio overview
+│   │   ├── swap.tsx         # Jupiter DEX integration
+│   │   ├── stealth.tsx      # Private payments
+│   │   ├── portfolio.tsx    # Holdings & positions
+│   │   ├── analytics.tsx    # P&L charts
+│   │   ├── yield.tsx        # Yield farming
+│   │   ├── disclosure.tsx   # Selective proofs
+│   │   └── compliance.tsx   # Audit trail
+│   └── components/
+│       ├── wallet-provider.tsx
+│       └── privacy-shield.tsx
+├── server/
+│   ├── routes.ts           # API endpoints
+│   ├── storage.ts          # Database operations
+│   ├── solana.ts           # RPC & transactions
+│   └── zk-commitment.ts    # ZK crypto functions
+└── shared/
+    └── schema.ts           # Data models</code></pre>
+        </section>
+
+        <!-- Stealth Payments Section -->
+        <section id="stealth-payments">
+          <h2>Stealth Payments</h2>
+          <p>
+            Stealth payments enable private peer-to-peer token transfers where there is no direct blockchain link between sender and recipient.
+          </p>
+
+          <h3 id="escrow-flow">Escrow Flow</h3>
+          <div class="flow-diagram">
+            <div class="flow-steps">
+              <div class="flow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <div class="step-title">Sender Deposits to Escrow</div>
+                  <div class="step-desc">Sender signs transaction transferring tokens to platform escrow wallet. Transaction signed client-side (non-custodial).</div>
+                </div>
+              </div>
+              <div class="arrow-down">↓</div>
+              <div class="flow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <div class="step-title">Claim Code Generated</div>
+                  <div class="step-desc">System generates unique claim code. Sender shares this code with recipient off-chain (chat, email, etc).</div>
+                </div>
+              </div>
+              <div class="arrow-down">↓</div>
+              <div class="flow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <div class="step-title">Recipient Claims</div>
+                  <div class="step-desc">Recipient enters claim code. Server verifies and releases tokens from escrow to recipient's wallet.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout info">
+            <div class="callout-icon">ℹ️</div>
+            <div class="callout-content">
+              <div class="callout-title">Non-Custodial Design</div>
+              <p>Sender signs their own deposit transactions. Escrow only holds tokens temporarily until claimed.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ZK Commitment Section -->
+        <section id="zk-commitment">
+          <h2>ZK Commitment Scheme</h2>
+          <p>
+            Optional maximum privacy mode that hides payment amounts using SHA-256 cryptographic commitments.
+          </p>
+
+          <h3>How It Works</h3>
+          <div class="flow-diagram">
+            <div class="flow-steps">
+              <div class="flow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <div class="step-title">Sender Enables ZK Mode</div>
+                  <div class="step-desc">Toggle "ZK Privacy Mode" when creating payment. System generates secret and salt.</div>
+                </div>
+              </div>
+              <div class="arrow-down">↓</div>
+              <div class="flow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <div class="step-title">Commitment Created</div>
+                  <div class="step-desc"><code>commitment = SHA-256(amount + secret + salt)</code><br>Only the hash is stored, NOT the actual amount.</div>
+                </div>
+              </div>
+              <div class="arrow-down">↓</div>
+              <div class="flow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <div class="step-title">Sender Receives ZK Claim Data</div>
+                  <div class="step-desc">JSON with code, amount, and secret. Must be shared off-chain with recipient.</div>
+                </div>
+              </div>
+              <div class="arrow-down">↓</div>
+              <div class="flow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                  <div class="step-title">Recipient Provides Proof</div>
+                  <div class="step-desc">Recipient must enter the correct amount + secret. Server verifies hash matches before releasing tokens.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3>ZK Claim Data Format</h3>
+          <div class="code-header">
+            <span class="code-lang">JSON</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code>{
+  "code": "abc123xyz789",
+  "amount": "10.5",
+  "secret": "randomSecret456"
+}</code></pre>
+
+          <h3>Verification Process</h3>
+          <div class="code-header">
+            <span class="code-lang">TypeScript</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code>// Server-side verification
+function verifyZkCommitment(
+  storedCommitment: string,
+  providedAmount: string,
+  providedSecret: string,
+  storedSalt: string
+): boolean {
+  const dataToHash = `${providedAmount}:${providedSecret}:${storedSalt}`;
+  const computedHash = sha256(dataToHash);
+  return computedHash === storedCommitment;
+}</code></pre>
+
+          <div class="callout warning">
+            <div class="callout-icon">⚠️</div>
+            <div class="callout-content">
+              <div class="callout-title">Important</div>
+              <p>If ZK claim data is lost, tokens cannot be recovered. The amount is not stored anywhere - only the cryptographic hash exists.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Privacy Scope Section -->
+        <section id="privacy-scope">
+          <h2>Privacy Scope</h2>
+          
+          <div class="callout danger">
+            <div class="callout-icon">🚨</div>
+            <div class="callout-content">
+              <div class="callout-title">Critical Limitation</div>
+              <p>MORP OS provides <strong>database/application-level privacy</strong>, NOT full on-chain anonymity. Transactions remain visible on Solana block explorers like Solscan.</p>
+            </div>
+          </div>
+
+          <h3 id="on-chain-visibility">What Is Visible On-Chain (Solscan)</h3>
+          <table class="privacy-table">
+            <tr>
+              <th>Transaction</th>
+              <th>Sender Address</th>
+              <th>Recipient Address</th>
+              <th>Amount</th>
+              <th>Timestamp</th>
+            </tr>
+            <tr>
+              <td>Sender → Escrow</td>
+              <td class="privacy-no">✗ Visible</td>
+              <td>Escrow (shared)</td>
+              <td class="privacy-no">✗ Visible</td>
+              <td class="privacy-no">✗ Visible</td>
+            </tr>
+            <tr>
+              <td>Escrow → Recipient</td>
+              <td>Escrow (shared)</td>
+              <td class="privacy-no">✗ Visible</td>
+              <td class="privacy-no">✗ Visible</td>
+              <td class="privacy-no">✗ Visible</td>
+            </tr>
+          </table>
+
+          <h3>What Is Protected</h3>
+          <table class="privacy-table">
+            <tr>
+              <th>Location</th>
+              <th>Amount Hidden?</th>
+              <th>Link Broken?</th>
+            </tr>
+            <tr>
+              <td>MORP OS Database</td>
+              <td class="privacy-yes">✓ Yes (ZK mode)</td>
+              <td class="privacy-yes">✓ Yes</td>
+            </tr>
+            <tr>
+              <td>MORP OS API</td>
+              <td class="privacy-yes">✓ Yes (ZK mode)</td>
+              <td class="privacy-yes">✓ Yes</td>
+            </tr>
+            <tr>
+              <td>Off-chain Sharing</td>
+              <td class="privacy-yes">✓ Only sender/recipient know</td>
+              <td class="privacy-yes">✓ Yes</td>
+            </tr>
+            <tr>
+              <td>Blockchain/Solscan</td>
+              <td class="privacy-no">✗ No</td>
+              <td class="privacy-no">✗ No (via escrow timing)</td>
+            </tr>
+          </table>
+
+          <h3 id="limitations">Current Limitations</h3>
+          <ul>
+            <li>All transactions visible on Solana explorers with full amounts</li>
+            <li>Shared escrow wallet creates timing correlation between deposits and claims</li>
+            <li>Recipient address exposed at claim time</li>
+            <li>No mixing or routing through multiple addresses</li>
+          </ul>
+
+          <h3>Future Improvements (Possible)</h3>
+          <ul>
+            <li><strong>Light Protocol</strong> - ZK compressed accounts for true on-chain privacy</li>
+            <li><strong>Token-2022 Confidential Transfer</strong> - Solana's native privacy extension</li>
+            <li><strong>One-time Escrow</strong> - Generate new escrow address per payment</li>
+            <li><strong>Timing Obfuscation</strong> - Random delays between deposit and claim</li>
+          </ul>
+        </section>
+
+        <!-- API Reference Section -->
+        <section id="api-reference">
+          <h2>API Reference</h2>
+
+          <h3 id="api-stealth">Stealth Payment Endpoints</h3>
+
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-path">/api/stealth/escrow</span>
+            </div>
+            <div class="endpoint-body">
+              <p class="endpoint-desc">Get the escrow wallet public address.</p>
+              <strong>Response:</strong>
+              <pre><code>{ "escrowAddress": "EscrowWallet..." }</code></pre>
+            </div>
+          </div>
+
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method post">POST</span>
+              <span class="endpoint-path">/api/stealth/build-deposit</span>
+            </div>
+            <div class="endpoint-body">
+              <p class="endpoint-desc">Build unsigned deposit transaction for wallet signing.</p>
+              <strong>Request:</strong>
+              <pre><code>{
+  "senderWallet": "SenderPublicKey...",
+  "tokenMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "amount": "10.5",
+  "zkEnabled": true  // Optional: enable ZK mode
+}</code></pre>
+              <strong>Response:</strong>
+              <pre><code>{
+  "transaction": "base64EncodedTx...",
+  "claimCode": "abc123xyz",
+  "zkSecret": "randomSecret456"  // Only if zkEnabled
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method post">POST</span>
+              <span class="endpoint-path">/api/stealth/build-claim</span>
+            </div>
+            <div class="endpoint-body">
+              <p class="endpoint-desc">Build claim transaction. For ZK payments, must include proof.</p>
+              <strong>Request:</strong>
+              <pre><code>{
+  "claimCode": "abc123xyz",
+  "claimerWallet": "RecipientPublicKey...",
+  "zkProof": {           // Required for ZK payments
+    "amount": "10.5",
+    "secret": "randomSecret456"
+  }
+}</code></pre>
+              <strong>Response:</strong>
+              <pre><code>{
+  "success": true,
+  "transaction": "base64EncodedTx...",
+  "amount": "10.5",
+  "tokenSymbol": "USDC",
+  "zkVerified": true
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-path">/api/stealth/lookup/:claimCode</span>
+            </div>
+            <div class="endpoint-body">
+              <p class="endpoint-desc">Look up payment details by claim code. Amount hidden for ZK payments.</p>
+              <strong>Response (ZK Payment):</strong>
+              <pre><code>{
+  "id": "payment-id",
+  "tokenSymbol": "USDC",
+  "amount": null,        // Hidden for ZK
+  "status": "pending",
+  "zkEnabled": true,
+  "zkCommitment": "sha256hash...",
+  "requiresZkProof": true
+}</code></pre>
+            </div>
+          </div>
+
+          <h3 id="api-portfolio">Portfolio Endpoints</h3>
+
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-path">/api/portfolio/holdings?wallet=...</span>
+            </div>
+            <div class="endpoint-body">
+              <p class="endpoint-desc">Get token holdings with shadow/public balance split.</p>
+            </div>
+          </div>
+
+          <div class="endpoint">
+            <div class="endpoint-header">
+              <span class="method get">GET</span>
+              <span class="endpoint-path">/api/portfolio/stats?wallet=...</span>
+            </div>
+            <div class="endpoint-body">
+              <p class="endpoint-desc">Get portfolio statistics (total value, shadow value, etc).</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Security Section -->
+        <section id="security">
+          <h2>Security Model</h2>
+
+          <h3>Non-Custodial Guarantees</h3>
+          <ul>
+            <li>All deposit transactions signed by user's wallet client-side</li>
+            <li>Private keys never leave user's wallet</li>
+            <li>Phantom/Solflare manifest for trusted dApp recognition</li>
+            <li>Transaction simulation before signing</li>
+          </ul>
+
+          <h3>Escrow Security</h3>
+          <ul>
+            <li>Escrow private key stored in encrypted Replit Secrets</li>
+            <li>Server only releases funds on valid claim code (and ZK proof if enabled)</li>
+            <li>Cancellation returns funds to original sender</li>
+            <li>Expiration mechanism for unclaimed payments</li>
+          </ul>
+
+          <h3>ZK Commitment Security</h3>
+          <ul>
+            <li>SHA-256 cryptographic hash function</li>
+            <li>Random salt prevents rainbow table attacks</li>
+            <li>Amount never stored - only the hash commitment</li>
+            <li>Invalid proofs rejected with clear error message</li>
+          </ul>
+
+          <div class="callout success">
+            <div class="callout-icon">✅</div>
+            <div class="callout-content">
+              <div class="callout-title">Audit Trail</div>
+              <p>All actions generate cryptographic audit entries for compliance and selective disclosure.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>MORP OS Documentation • Private Finance Operating System on Solana</p>
+      <p style="margin-top: 8px;">Built with privacy in mind. Not financial advice.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Copy code functionality
+    function copyCode(btn) {
+      const pre = btn.closest('.code-header').nextElementSibling;
+      const code = pre.querySelector('code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+
+    // Print button
+    function printDocs() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
