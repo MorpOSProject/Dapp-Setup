@@ -20,6 +20,7 @@ import CompliancePage from "@/pages/compliance";
 import StealthPage from "@/pages/stealth";
 import MultisigPage from "@/pages/multisig";
 import RoutingPage from "@/pages/routing";
+import ZkSnarkPage from "@/pages/zksnark";
 
 function Router() {
   return (
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/stealth" component={StealthPage} />
       <Route path="/multisig" component={MultisigPage} />
       <Route path="/routing" component={RoutingPage} />
+      <Route path="/zksnark" component={ZkSnarkPage} />
       <Route path="/disclosure" component={DisclosurePage} />
       <Route path="/analytics" component={AnalyticsPage} />
       <Route path="/yield" component={YieldPage} />
@@ -41,7 +43,7 @@ function Router() {
 
 function AppLayout() {
   const sidebarStyle = {
-    "--sidebar-width": "16rem",
+    "--sidebar-width": "17rem",
     "--sidebar-width-icon": "3.5rem",
   };
 
@@ -50,14 +52,27 @@ function AppLayout() {
       <div className="flex min-h-screen w-full">
         <AppSidebar />
         <SidebarInset className="flex flex-col flex-1">
-          <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b px-4 sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <SidebarTrigger data-testid="button-sidebar-toggle" />
+          <header className="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border/40 px-4 sticky top-0 z-50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+            <div className="flex items-center gap-3">
+              <SidebarTrigger 
+                data-testid="button-sidebar-toggle"
+                className="h-9 w-9 rounded-lg hover:bg-accent/80 transition-all duration-200 hover:scale-105"
+              />
+              <div 
+                className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border/30"
+                data-testid="network-status-indicator"
+              >
+                <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                <span className="text-xs font-medium text-muted-foreground">Mainnet</span>
+              </div>
+            </div>
             <div className="flex items-center gap-2">
               <WalletButton />
+              <div className="w-px h-6 bg-border/50 mx-1 hidden sm:block" />
               <ThemeToggle />
             </div>
           </header>
-          <main className="flex-1 overflow-auto">
+          <main className="flex-1 overflow-auto bg-gradient-to-b from-background to-background/95">
             <Router />
           </main>
         </SidebarInset>
