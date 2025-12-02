@@ -26,6 +26,10 @@ import {
   lightProtocolConfig,
   zkExecutionSessions,
   compressedNotes,
+  zkCircuits,
+  zkCircuitTemplates,
+  zkGeneratedProofs,
+  zkTrustedSetups,
   type SwapOrder,
   type BatchedAction,
   type DisclosureProof,
@@ -49,6 +53,10 @@ import {
   type LightProtocolConfig,
   type ZkExecutionSession,
   type CompressedNote,
+  type ZkCircuit,
+  type ZkCircuitTemplate,
+  type ZkGeneratedProof,
+  type ZkTrustedSetup,
   type InsertSwapOrder,
   type InsertBatchedAction,
   type InsertDisclosureProof,
@@ -70,6 +78,8 @@ import {
   type InsertLightProtocolConfig,
   type InsertZkExecutionSession,
   type InsertCompressedNote,
+  type InsertZkCircuit,
+  type InsertZkGeneratedProof,
   type ShadowBalance,
   type PortfolioHolding,
   type DefiPosition,
@@ -229,6 +239,19 @@ export interface IStorage {
   markNoteSpent(noteCommitment: string, txSignature: string): Promise<CompressedNote | undefined>;
   getCompressedNoteByCommitment(commitment: string): Promise<CompressedNote | undefined>;
   getCompressedNoteByNullifier(nullifier: string): Promise<CompressedNote | undefined>;
+  
+  // zkSNARK Circuits
+  createZkCircuit(circuit: InsertZkCircuit): Promise<ZkCircuit>;
+  getZkCircuits(walletAddress: string): Promise<ZkCircuit[]>;
+  getZkCircuitById(id: string): Promise<ZkCircuit | undefined>;
+  updateZkCircuit(id: string, updates: Partial<ZkCircuit>): Promise<ZkCircuit | undefined>;
+  deleteZkCircuit(id: string): Promise<boolean>;
+  
+  // zkSNARK Generated Proofs
+  createZkGeneratedProof(proof: InsertZkGeneratedProof): Promise<ZkGeneratedProof>;
+  getZkGeneratedProofs(walletAddress: string): Promise<ZkGeneratedProof[]>;
+  getZkGeneratedProofById(id: string): Promise<ZkGeneratedProof | undefined>;
+  updateZkGeneratedProof(id: string, updates: Partial<ZkGeneratedProof>): Promise<ZkGeneratedProof | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1585,6 +1608,81 @@ export class DatabaseStorage implements IStorage {
     const [note] = await db.select().from(compressedNotes)
       .where(eq(compressedNotes.nullifierHash, nullifier));
     return note;
+  }
+
+  // zkSNARK Circuits
+  async createZkCircuit(circuit: InsertZkCircuit): Promise<ZkCircuit> {
+    const [created] = await db.insert(zkCircuits).values(circuit).returning();
+    
+    await this.addAuditEntry(
+      circuit.walletAddress,
+      "zk_circuit_created",
+      `Created zkSNARK circuit: ${circuit.name}`,
+      { circuitId: created.id, circuitType: circuit.circuitType }
+    );
+    
+    return created;
+  }
+
+  async getZkCircuits(walletAddress: string): Promise<ZkCircuit[]> {
+    return db.select().from(zkCircuits)
+      .where(eq(zkCircuits.walletAddress, walletAddress))
+      .orderBy(desc(zkCircuits.createdAt));
+  }
+
+  async getZkCircuitById(id: string): Promise<ZkCircuit | undefined> {
+    const [circuit] = await db.select().from(zkCircuits)
+      .where(eq(zkCircuits.id, id));
+    return circuit;
+  }
+
+  async updateZkCircuit(id: string, updates: Partial<ZkCircuit>): Promise<ZkCircuit | undefined> {
+    const [updated] = await db.update(zkCircuits)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(zkCircuits.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteZkCircuit(id: string): Promise<boolean> {
+    const result = await db.delete(zkCircuits)
+      .where(eq(zkCircuits.id, id));
+    return true;
+  }
+
+  // zkSNARK Generated Proofs
+  async createZkGeneratedProof(proof: InsertZkGeneratedProof): Promise<ZkGeneratedProof> {
+    const [created] = await db.insert(zkGeneratedProofs).values(proof).returning();
+    
+    await this.addAuditEntry(
+      proof.walletAddress,
+      "zk_proof_generated",
+      `Generated zkSNARK proof using circuit ${proof.circuitId}`,
+      { proofId: created.id, isTemplate: proof.isTemplate }
+    );
+    
+    return created;
+  }
+
+  async getZkGeneratedProofs(walletAddress: string): Promise<ZkGeneratedProof[]> {
+    return db.select().from(zkGeneratedProofs)
+      .where(eq(zkGeneratedProofs.walletAddress, walletAddress))
+      .orderBy(desc(zkGeneratedProofs.createdAt))
+      .limit(50);
+  }
+
+  async getZkGeneratedProofById(id: string): Promise<ZkGeneratedProof | undefined> {
+    const [proof] = await db.select().from(zkGeneratedProofs)
+      .where(eq(zkGeneratedProofs.id, id));
+    return proof;
+  }
+
+  async updateZkGeneratedProof(id: string, updates: Partial<ZkGeneratedProof>): Promise<ZkGeneratedProof | undefined> {
+    const [updated] = await db.update(zkGeneratedProofs)
+      .set(updates)
+      .where(eq(zkGeneratedProofs.id, id))
+      .returning();
+    return updated;
   }
 }
 
